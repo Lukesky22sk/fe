@@ -1,17 +1,18 @@
-const API_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export async function fetchInitialQuestion() {
-  const res = await fetch(`${API_URL}/api/initial-question`);
-  if (!res.ok) throw new Error("Failed to fetch initial question");
-  return res.json();
+  const response = await fetch(`${API_BASE_URL}/api/questions`);
+  if (!response.ok) throw new Error('Failed to fetch questions');
+  return await response.json(); // expecting: { question, guidance }
 }
 
 export async function submitAnswer(answer) {
-  const res = await fetch(`${API_URL}/api/submit-answer`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const response = await fetch(`${API_BASE_URL}/api/answers`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ answer }),
   });
-  if (!res.ok) throw new Error("Failed to submit answer");
-  return res.json();
+
+  if (!response.ok) throw new Error('Failed to submit answer');
+  return await response.json(); // expecting: { nextQuestion, guidance }
 }
